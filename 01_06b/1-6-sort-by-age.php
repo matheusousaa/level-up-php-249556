@@ -35,8 +35,9 @@ function print_array( $a ) {
 	echo '</pre>';
 }
 
-function compare_ages( $p1, $p2) {
-	// Challenge: Refactor this function. 
+function compare_ages($p1, $p2)
+{
+	return $p1->get_age() <=> $p2->get_age();
 }
 
 $joe = new Person('Joe', '2010-10-20');
@@ -56,7 +57,7 @@ $carl = new Person('Carl', '2010-03-25');
 
 $people = [ $joe, $phil, $erin, $alice, $bob, $carl, $jane, $john, $lou, $louis, $marie, $mike, $rob, $teresa];
 
-// Sort Here!
+usort($people, "compare_ages");
 
 // Print Results
 print_array( $people ); 
