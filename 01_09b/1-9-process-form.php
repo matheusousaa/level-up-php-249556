@@ -1,7 +1,15 @@
 <?php 
 function process_form() {
-	// Challenge: define this function
-} 
+	echo "<pre>";
+	echo ("Name: " . $_POST['name'] . "\n");
+	echo ("Email: " . $_POST['email'] . "\n");
+	echo ("Message: " . $_POST['message'] . "\n");
+	echo "</pre>";
+}
+
+if ($_POST['submit']) {
+	process_form();
+}
 
 ?>
 
