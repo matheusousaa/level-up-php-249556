@@ -5,7 +5,12 @@ function process_form() {
 			echo '<p><b>' . ucfirst( $label ) . '</b>: ' . $value . '</p>';
 		}
 	}
-} 
+}
+
+if (isset($_POST['name'])) {
+	setcookie('name', $_POST['name']);
+	$_COOKIE['name'] = $_POST['name'];
+}
 
 ?>
 
@@ -26,7 +31,7 @@ function process_form() {
 			<form name="contact" method="POST">
 				<div>
 					<label for="name">Name:</label>
-					<input type="text" name="name" placeholder="What's Your Name?""/>
+					<input type="text" name="name" placeholder="What's Your Name?" value="<?php echo isset($_COOKIE['name']) ? $_COOKIE['name'] : ''; ?>" />
 				</div>
 				<div>
 					<label for="email">Email:</label>
