@@ -18,12 +18,9 @@ class Person {
 	}
 	
 	public function get_age() {
-		// Challenge: define this function
-
+		return date_diff(new DateTime(), new DateTime($this->dob))->y;
 	}
 }
-
-
 
 $joe = new Person('Joe', '1985-10-20');
 $erin = new Person('Erin', '1991-08-28');
