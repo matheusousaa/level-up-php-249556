@@ -6,7 +6,9 @@
 		private $graduation_year;
 		
 		function __construct($name, $dob, $graduation_year = null, $gpa = 0.00) {
-		
+			parent::__construct($name, $dob);
+			$this->graduation_year = (!is_null($graduation_year)) ? $graduation_year : date('Y', strtotime('+4 years', strtotime(date('Y'))));
+			$this->gpa = $gpa;
 		}
 		
 		public function get_graduation_year() {
