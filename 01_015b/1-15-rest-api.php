@@ -5,7 +5,16 @@ function print_info( $info ) {
 	echo '</pre>';
 }
 
-// Write your function(s) here.
+
+function get_comic() {
+	$get_total = file_get_contents("http://xkcd.com/info.0.json");
+	$total = json_decode($get_total)->num;
+	$comic = file_get_contents("https://xkcd.com/".rand(1, $total)."/info.0.json");
+	
+	return json_decode($comic);
+}
+
+$comic = get_comic();
 
 ?>
 
@@ -18,7 +27,8 @@ function print_info( $info ) {
 </head>
 <body>
 	<main>
-		<!--Output goes here-->
+		<p><h2><?php echo $comic->title; ?></h2></p>
+		<img src="<?php echo $comic->img; ?>" title="<?php echo $comic->alt; ?>" alt="<?php echo $comic->alt; ?>">
 	</main>
 </body>
 </html>
