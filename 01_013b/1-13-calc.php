@@ -2,8 +2,25 @@
 	include_once( 'namespace.calculator.php' );
 
 	function process_form() {
-		// Challenge: define this function
+		$operation = $_POST['submit'];
+		$numbers = trim(str_ireplace(' ', '', $_POST['numbers']));
+		$numbers = explode(',', $_POST['numbers']);
 
+		switch ($operation) {
+			case 'Add':
+				return calculator\add($numbers);
+				break;
+			
+			case 'Multiply':
+				return calculator\multiply($numbers);
+				break;
+
+			case 'Average':
+				return calculator\average($numbers);
+				break;
+		}
+
+		return $_POST['numbers'];
 	} 
 	
 	?>
