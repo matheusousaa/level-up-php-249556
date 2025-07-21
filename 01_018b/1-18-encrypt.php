@@ -1,11 +1,20 @@
 <?php
 
+$key = random_bytes(SODIUM_CRYPTO_SECRETBOX_KEYBYTES);
+
 function encrypt_string( $str ) {
-	// Challenge: define this function
+	global $key;
+	$nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
+	$cipher_text = base64_encode($nonce.sodium_crypto_secretbox($str, $nonce, $key));
+	return $cipher_text;
 }
 
 function decrypt_string( $hash ) {
-	// Challenge: define this function
+	global $key;
+	$decoded = base64_decode($hash);
+	$nonce = mb_substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
+	$cipher_text = mb_substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
+	return sodium_crypto_secretbox_open($cipher_text, $nonce, $key);
 }
 ?>
 
@@ -20,8 +29,8 @@ function decrypt_string( $hash ) {
 	<main>
 		<?php 
 		if ( isset( $_POST['string'] ) ) {
-			$encrpyted_string = encrypt_string( $_POST['string'] );
-			$decrypted_string = decrypt_string( $encrpyted_string );
+			$encrypted_string = encrypt_string( $_POST['string'] );
+			$decrypted_string = decrypt_string( $encrypted_string );
 			
 			if ( $decrypted_string === $_POST['string'] ) {
 				echo "<h3>You successfully encrypted and decrypted $decrypted_string</h3>";
