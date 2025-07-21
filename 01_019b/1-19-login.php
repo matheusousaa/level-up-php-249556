@@ -1,13 +1,29 @@
 <?php 
-	include_once( 'generate-file.php' ); 
-	
-	function login($username, $password) {
-		// Challenge: define this function
+	include_once( 'generate-file.php' );
 
+	function login($username, $password) {
+		$logins = file_get_contents('logins.txt');
+		$logins = explode( "\n", $logins );
+
+		foreach ($logins as $login) {
+			$login = explode(',', $login);
+			if ($username == $login[0] && password_verify($password, $login[1])) {
+				setcookie('username', $username);
+				$_COOKIE['username'] = $username;
+				setcookie('loggedin', true);
+				$_COOKIE['loggedin'] = true;
+				return;
+			}
+		}
+
+		setcookie('username', '', time()-3600);
+		setcookie('loggedin', '', time()-3600);
+		echo "Username and/or password incorret";
+		return false;
 	}
 	
 	if ( isset( $_POST['submit'] ) ) {
-		// Process login form here
+		login($_POST['username'], $_POST['password']);
 	} 
 ?>
 <!DOCTYPE html>
@@ -19,7 +35,11 @@
 	</head>
 	<body>
 		<main>
-			<!--Don't forget the welcome message!-->
+			<?php 
+				if (isset($_COOKIE['loggedin']) && !is_null($_COOKIE['loggedin'])) { 
+					echo "Welcome {$_COOKIE['username']} !";
+				}
+			?>
 			<form name="login" method="POST">
 				<div>
 					<label for="username">Username:</label>
