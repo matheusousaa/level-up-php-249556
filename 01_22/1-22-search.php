@@ -1,7 +1,17 @@
 <?php
   function search_page( $term ) {
-    //write this function
-    $page = 'content.html'; 
+    $term = strtolower($term);
+    $page = 'content.html';
+    $content = file_get_contents($page);
+    $content_normalized = strtolower(strip_tags($content));
+    $offset = strpos($content_normalized, $term);
+
+    if (!$offset) {
+        return "No results found";
+    }
+
+    return substr($content_normalized, $offset-50, strlen($term)+100);
+
   }
 ?>
 <!DOCTYPE html>
@@ -13,7 +23,7 @@
     <body>
         <?php
           if( isset( $_GET['search'] ) ) {
-            search_page( $_GET['search'] );
+            echo search_page( $_GET['search'] );
           }
         ?>
         <form name="page-search" method="GET">
