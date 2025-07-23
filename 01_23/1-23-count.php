@@ -1,6 +1,26 @@
 <?php
   function count_words( $file ) {
-    //write this function
+    $content = file_get_contents($file);
+	$content = strtolower($content);
+	$content = preg_replace("#[[:punct:]]#", "", $content);
+	$stop_words = ['a', 'an', 'and', 'is', 'the', 'uh', 'umm'];
+	$content = preg_replace('/\b(.'. implode('|', $stop_words) .')\b/', '', $content);
+	$words = explode(" ", $content);
+	$counter = array(); 
+
+	foreach($words as $word) {
+		if(!empty($word)) {
+			if(array_key_exists($word, $counter)) {
+				$counter[$word]++;
+			} else {
+				$counter[$word] = 1;
+			}
+		}
+	}
+
+	arsort($counter);
+
+	return $counter;
   }
 
 	$words = count_words( 'transcript.txt' );
